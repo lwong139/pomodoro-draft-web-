@@ -1,0 +1,109 @@
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: beige;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    user-select: none;
+    width: fit-content;
+    position: relative; /* enable right-side arrow like a tooltip */
+    /* Guard against global button hover altering shape */
+    font-size: 18px;
+}
+
+/* Tighter vertical size for the Okey button without changing shape */
+.menu-item.js-okey-button{
+    padding: 2px 10px;
+}
+
+
+/* Keep border/background consistent even on hover/active so shape doesn't change */
+.menu-item.js-okey-button,
+.menu-item.js-okey-button:hover,
+.menu-item.js-okey-button:active{
+    background: beige;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+}
+
+.selector {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    text-shadow: 0 0 10px #a5a58d;
+}
+
+/* Only the ">" appears and moves on hover */
+/* Show the inline left selector on hover, and animate it */
+/* Hide inline selector; use external left tooltip to match others */
+.menu-item:hover .selector {
+    opacity: 0;
+    animation: none;
+}
+
+/* Left-side tooltip-style arrow on hover (matches global style) */
+.menu-item::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: auto;
+    right: calc(100% + 6px); /* place to the left */
+    --arrow-base: -50%;
+    transform: translateY(var(--arrow-base));
+    color: #6b705c;
+    font-weight: 900;
+    font-size: 1em;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity .15s ease;
+    text-shadow: 0 0 10px rgba(255,255,255,0.6);
+    pointer-events: none;
+}
+
+.menu-item:hover::after{
+    content: '>';
+    opacity: 1;
+    animation: arrow-bob 0.5s ease-in-out infinite; /* bob like the others */
+}
+
+@keyframes bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.menu-text {
+    font-size: 20px;
+    color: #6b705c;
+    letter-spacing: 1px;
+    font-family: 'Cherry Bomb One';
+
+}
+
+/* Slightly smaller text inside the Okey button to reduce height */
+.menu-item .menu-text{
+    font-size: 18px;
+    line-height: 1.05;
+}
+
+/* Keep the text color static on hover */
+.menu-item:hover .menu-text {
+    color: #57574d;
+
+}
+
+.selector,
+.selector-placeholder{
+  display:inline-block;
+  width:0.6ch;
+  text-align: center;
+}

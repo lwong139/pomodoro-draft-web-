@@ -1,0 +1,195 @@
+
+        .button-container {
+            display: flex;
+            gap: 14px;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            margin-left: 30px; /* slight nudge to the right */
+            /* establish default order for children */
+            
+        }
+        /* Default order: reset (left), start (middle), skip (right) */
+        .button-container .btn-reset{ order: 1; }
+        .button-container .btn-start{ order: 2; }
+        .button-container .btn-skip { order: 3; }
+
+        /* When timer is running, center the pause button and move reset left */
+        .button-container.running .btn-reset{ order: 1; }
+        .button-container.running .btn-start{ order: 2; }
+        .button-container.running .btn-skip { order: 3; }
+
+        .cute-button {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cute-button::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .cute-button:active {
+            transform: translate(2px, 2px);
+            filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.15));
+        }
+
+        /* All buttons */
+        .btn-start,
+        .btn-reset,
+        .btn-skip {
+            background: linear-gradient(180deg, #b5b59d 0%, #a5a58d 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 2px 0 rgba(255, 255, 255, 0.4),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.1),
+                0 4px 0 #8a8a75,
+                0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-start::before,
+        .btn-reset::before,
+        .btn-skip::before {
+            background: #a5a58d;
+            opacity: 0.3;
+        }
+
+        .btn-start:hover,
+        .btn-reset:hover,
+        .btn-skip:hover {
+            background: linear-gradient(180deg, #c5c5ad 0%, #b5b59d 100%);
+        }
+
+        .btn-start:active,
+        .btn-reset:active,
+        .btn-skip:active {
+            box-shadow: 
+                inset 0 2px 5px rgba(0, 0, 0, 0.2),
+                0 2px 0 #8a8a75;
+        }
+
+        /* Hand-drawn circle effect */
+        .cute-button {
+            clip-path: polygon(
+                50% 0%, 55% 0.5%, 60% 1%, 65% 2%, 70% 3.5%, 75% 5.5%, 79% 8%, 83% 11%,
+                86.5% 14.5%, 89.5% 18.5%, 92% 23%, 94% 27.5%, 95.5% 32.5%, 97% 37.5%,
+                98% 42.5%, 98.5% 47.5%, 99% 52.5%, 98.5% 57.5%, 98% 62.5%, 97% 67.5%,
+                95.5% 72.5%, 94% 77%, 92% 81.5%, 89.5% 85.5%, 86.5% 89%, 83% 92%,
+                79% 94.5%, 75% 96.5%, 70% 98%, 65% 99%, 60% 99.5%, 55% 100%, 50% 100%,
+                45% 100%, 40% 99.5%, 35% 99%, 30% 98%, 25% 96.5%, 21% 94.5%, 17% 92%,
+                13.5% 89%, 10.5% 85.5%, 8% 81.5%, 6% 77%, 4.5% 72.5%, 3% 67.5%,
+                2% 62.5%, 1.5% 57.5%, 1% 52.5%, 1.5% 47.5%, 2% 42.5%, 3% 37.5%,
+                4.5% 32.5%, 6% 27.5%, 8% 23%, 10.5% 18.5%, 13.5% 14.5%, 17% 11%,
+                21% 8%, 25% 5.5%, 30% 3.5%, 35% 2%, 40% 1%, 45% 0.5%
+            );
+        }
+
+        /* Icons */
+        .icon {
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Play triangle */
+        .icon-play {
+            width: 0;
+            height: 0;
+            border-left: 14px solid #6b705c;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            margin-left: 2px;
+            filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+        }
+
+        /* Pause bars */
+        .icon-pause {
+            width: 16px;
+            height: 18px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pause-bar {
+            width: 4px;
+            height: 18px;
+            background: #6b705c;
+            border-radius: 2px;
+            filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+        }
+
+        /* Reset circular arrow */
+        .icon-reset {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #6b705c;
+            border-radius: 50%;
+            border-top-color: transparent;
+            transform: rotate(-50deg);
+            position: relative;
+            filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+        }
+
+        .icon-reset::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 0px solid transparent;
+            border-top: 8px solid #6b705c;
+            transform: rotate(20deg);
+        }
+
+        /* Skip forward icon */
+        .icon-skip {
+            width: 20px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .skip-triangle {
+            width: 0;
+            height: 0;
+            border-left: 10px solid #6b705c;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+        }
+
+        .skip-bar {
+            width: 3px;
+            height: 18px;
+            background: #6b705c;
+            border-radius: 1px;
+            filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.3));
+        }
+
+
+
+        @media (max-width: 600px) {
+            .cute-button {
+                width: 44px;
+                height: 44px;
+            }
+        }

@@ -1,0 +1,144 @@
+
+        .dialogue-container {
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .name-tag {
+            background: #a5a58d;
+            border: 3px solid #6b705c;
+            border-radius: 15px;
+            padding: 8px 20px;
+            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .name-tag span {
+            color: #fef9f3;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+        }
+
+        .dialogue-box {
+            background: linear-gradient(to bottom, #fef9f3 0%, #f5ebe0 100%);
+            border: 3px solid #6b705c;
+            border-radius: 20px;
+            padding: 20px 25px;
+            position: relative;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+        }
+
+        .dialogue-tail-wrapper {
+            position: absolute;
+            bottom: -22px;
+            left: 30px;
+        }
+
+        .dialogue-tail {
+            width: 30px;
+            height: 22px;
+            position: relative;
+        }
+
+        .dialogue-tail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 22px solid #6b705c;
+        }
+
+        .dialogue-tail::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 3px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 18px solid #f5ebe0;
+        }
+
+
+
+        .dialogue-text {
+            color: #6b705c;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 1.6em;
+        }
+
+        .a-button {
+            position: absolute;
+            bottom:-80px;   /* move further downward */
+            right: 0px;    /* move further right */
+            width: 40px;
+            height: 40px;
+            background: #a5a58d;
+            border: 3px solid #6b705c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fef9f3;
+            font-weight: bold;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: bounce 1s ease-in-out infinite;
+            cursor: none;
+            transition: transform 0.1s;
+            z-index: 70;   /* sit above nearby UI */
+        }
+
+        .a-button:hover {
+            transform: scale(1.1);
+        }
+
+        .a-button:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #5a4a3a;
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+/* change width here */
+#timer-screen.casino-mode .dialogue-top-slot { display: grid; justify-items: center; }
+#timer-screen.casino-mode .dialogue-top-slot .dialogue-box {
+width: 360px !important;
+min-width: 360px;
+margin-bottom:-70px; /* pick your width /
+
+min-width: 360px !important; / keeps width even with short text */
+}
+#timer-screen.casino-mode .dialogue-top-slot .dialogue-tail::before { top: 0px; }
+#timer-screen.casino-mode .dialogue-top-slot .dialogue-tail::after { top: -2px; left: 3px; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #f5ebe0; }
+#timer-screen.casino-mode .dialogue-top-slot .dialogue-tail-wrapper { bottom: -22px; }

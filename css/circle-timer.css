@@ -1,0 +1,92 @@
+/* Clean, seam-free donut using a masked overlay */
+.circle-timer{
+  /* Tunables */
+  --size: 148.5px;
+  --thickness: 10.5px;
+  --p: 0;                      /* 0–100 progress */
+  --fg: var(--focus);          /* active arc color */
+  --track: rgba(255,255,255,.35); /* ring remainder (use --bg to “hide”) */
+  --bg: #b7b7a4;             /* inner fill color */
+
+  position: relative;
+  width: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+
+  /* Solid inner circle: no transparency = no halo */
+  background: var(--bg);
+}
+
+/* Masked progress ring overlay */
+.circle-timer::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transition: background 0.2s ease; /* smooth mode color change */
+
+  /* Progress (fg) + remainder (track) */
+  background: conic-gradient(var(--fg) calc(var(--p) * 1%), var(--track) 0);
+
+  /* Cut to a ring — center is transparent ONLY in this overlay.
+     The base .circle-timer background shows through as solid --bg. */
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--thickness)),
+    #000 0
+  );
+          mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - var(--thickness)),
+    #000 0
+  );
+
+  /* Optional: slightly overlap to remove any sub-pixel seam */
+  /* transform: scale(1.0001); */
+}
+/* Mode colors (yours) */
+:root{
+  --focus: #6b705c;
+  --shortBreak: #6b705c;
+  --longBreak: #6b705c;
+}
+
+.circle-timer.is-focus      { --fg: var(--focus); }
+.circle-timer.is-shortBreak { --fg: var(--shortBreak); }
+.circle-timer.is-longBreak  { --fg: var(--longBreak); }
+
+/* Optional: if you want “no track”, make remainder = inner fill */
+.circle-timer.no-track::after{
+  background: conic-gradient(var(--fg) calc(var(--p) * 1%), var(--bg) 0);
+}
+
+/* Centered time label */
+.circle-timer .progress-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px; /* adds space between numbers and colon */
+  font-size: 30px;
+  font-weight: 100;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: white; /* optional for readability */
+}
+
+/* When you switch modes, change --fg to match */
+.circle-timer.is-focus      { --fg: var(--focus); }
+.circle-timer.is-shortBreak { --fg: var(--shortBreak); }
+.circle-timer.is-longBreak  { --fg: var(--longBreak); }
+
+.timer-numbers{
+  font-size:30px;
+  color: white;
+}
+
+/* Progress count (e.g., 0/4) color on the timer screen */
+#timer-screen .progress-text,
+#timer-screen #progressText{
+  color: #6b705c !important;
+}

@@ -1,0 +1,817 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Theme palette */
+:root {
+  --c-primary: #6b705c;
+  --c-muted1: #a5a58d;
+  --c-muted2: #b7b7a4;
+  --c-surface: #ffe8d6;
+  --c-surface-strong: #ddbea9;
+  --c-accent: #cb997e;
+  --casino-top-offset: 230px; /* spacer height for casino placement */
+}
+
+/* Main container */
+.container {
+  max-width: 21rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.main-card {
+  background: transparent; 
+  border-radius: 1.5rem;
+  box-shadow: none; 
+  overflow: visible;
+  position: relative;
+}
+
+
+.subtitle {
+  color: var(--c-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.token-badge {
+  background: var(--c-accent);
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  border: 3px solid var(--c-accent);
+  box-shadow: 0 4px 0 0 var(--c-primary), 0 5px 10px rgba(0,0,0,0.2);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--c-primary);
+}
+
+.token-label {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: var(--c-primary);
+}
+
+.sound-btn {
+  background: var(--c-muted2);
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 3px solid var(--c-muted2);
+  box-shadow: 0 3px 0 0 var(--c-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+/* Floating positions for global controls */
+.sound-floating { position: fixed; top: -0.5rem; right: 8.5rem; left: auto; z-index: 60; }
+.settings-floating {
+  position: fixed; top: -0.5rem; right: 2rem; z-index: 60;
+  width: 0.75rem; height: 2.25rem; padding: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+
+.sound-btn, .btn-settings {
+background: transparent !important;
+border-color: transparent !important;
+box-shadow: none !important;
+color: var(--c-primary); /* readable on light bg */
+}
+.sound-btn, .btn-settings {
+filter: brightness(0.65) contrast(1.15); /* darker, crisper */
+text-shadow: 0 0 2px rgba(0,0,0,0.35); /* subtle outline */
+}
+.btn.settings-floating {
+font-size: 1.8rem;
+line-height: 1;
+width: auto;
+height: auto;
+padding: 0;
+}
+
+/* Main content */
+.content {
+  padding: 1rem;
+  background: transparent; 
+  position: relative;
+}
+
+/* Fixed spacer so removing dots doesn't alter layout */
+#bgDots { display:block; height: var(--casino-top-offset); }
+#headerDots { display:none; }
+
+
+
+/* Tighten spacing specifically inside the casino gambling UI */
+#casino-area .gambling { padding: 0 !important; margin-left: 0; min-height: 330px; position: relative; }
+#casino-area .gambling .content { padding: 0.25rem 0 0 !important; }
+#casino-area .gambling .container { margin: 0 auto; margin-left: 0 !important; }
+#casino-area .gambling .machine-frame { margin-bottom: 0rem; }
+#casino-area .gambling .display-screen { padding: 0.75rem 0.75rem 0.75rem 0.5rem; }
+#casino-area { margin-top: 30px; }
+/* Centered token display */
+.token-center { display:flex; align-items:center; justify-content:center; gap:.5rem; padding: .5rem 0 1rem; }
+#casino-area .sound-floating, #casino-area .settings-floating { top: -1.5rem !important; }
+.machine-frame {
+  background: var(--c-muted2);
+  border-radius: 1.5rem;
+  padding: 0.25rem;
+  border: 5px solid var(--c-muted2);
+  box-shadow: none; 
+  margin-bottom: 1rem;
+  position: relative;
+
+}
+
+
+
+/* Hide any residual controls area at the bottom */
+.controls { display: none; }
+
+.display-screen {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 4px solid var(--c-accent);
+  box-shadow: inset 0 2px 8px rgba(107, 112, 92, 0.25);
+  margin-bottom: 1.5rem;
+}
+
+.reels {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.reel {
+  background: white;
+  border-radius: 1rem;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--c-primary);
+  border: 4px solid var(--c-surface-strong);
+  position: relative;
+}
+
+.reel-placeholder { width: 82%; max-height: 82%; height: auto; display: block; }
+
+.reel.spinning {
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Lever */
+.lever-container {
+  position: absolute;
+  right: -3.5rem; /* move slightly left */
+  top: 45%; /* move slightly up */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Prevent horizontal shift when label hides/shows */
+  min-width: 5rem;
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* pull label removed for now */
+.lever-label {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  background: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #6b705c;
+  border: 2px solid #cb997e;
+  animation: pulse-label 1.5s ease-in-out infinite;
+  display: none;
+}
+
+@keyframes pulse-label {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+    .lever {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: auto; /* allow clicks to bubble to container */
+      position: relative;
+    }
+
+.lever-container.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Lever track/slot */
+    .lever-track {
+      width: 2rem;
+      height: 10rem;
+      background: white;
+      border-radius: 1rem;
+      border: 3px solid var(--c-muted1);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: visible;
+      pointer-events: auto;
+    }
+
+.lever.disabled .lever-track {
+  background: var(--c-muted1);
+}
+
+/* Ball inside track - this moves */
+    .lever-ball {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: #ddbea9;
+      box-shadow: 0 4px 0 0 #ddbea9, inset -2px -2px 6px rgba(0,0,0,0.3), inset 2px 2px 6px rgba(255,255,255,0.3);
+      position: absolute;
+      top: -0.25rem; /* move ball slightly upward */
+      left: calc(50% - 1.25rem); /* center without transform to prevent sideways shift */
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: top 0.3s ease;
+      pointer-events: auto; /* clickable surface */
+    }
+
+.lever-container:not(.disabled):active .lever-ball {
+  top: calc(100% - 2.5rem - 0.25rem); /* full travel within track */
+}
+
+.lever-ball.pulling {
+  top: calc(100% - 2.5rem - 0.25rem); /* match active state */
+}
+
+.lever.disabled .lever-ball {
+  background: var(--c-muted1);
+  box-shadow: 0 4px 0 0 var(--c-primary), inset -2px -2px 6px rgba(0,0,0,0.3), inset 2px 2px 6px rgba(255,255,255,0.3);
+}
+
+.lever-ball .spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.spinner.hidden {
+  display: none;
+}
+
+.lever-label {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  background: var(--c-surface-strong);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #6b705c;
+  animation: pulse-label 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-label {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Message */
+.message {
+  background: #fff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  border: 3px solid var(--c-primary);
+  position: relative;
+}
+
+.message-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.5rem;
+  opacity: 0.25;
+}
+
+.message-icon svg { width: 1.5rem; height: 1.5rem; display: block; }
+
+.message-text {
+  color: var(--c-primary);
+  font-weight: 900;
+  text-align: left;
+  font-size: 1.05rem;
+  position: relative;
+  z-index: 10;
+  white-space: pre-line;
+  min-height: 1.4em;
+}
+
+.message.hidden { display: none; }
+
+/* Dialogue tail */
+.dialogue-tail-wrapper { position: absolute; bottom: -16px; left: 24px; }
+.dialogue-tail { width: 26px; height: 16px; position: relative; }
+.dialogue-tail::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 16px solid var(--c-primary);
+  width: 0; height: 0;
+}
+.dialogue-tail::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 2.5px;
+  border-left: 10.5px solid transparent;
+  border-right: 10.5px solid transparent;
+  border-top: 13px solid #fff;
+  width: 0; height: 0;
+}
+
+/* Blinking typewriter cursor */
+.cursor { display:inline-block; width:2px; height:1em; background: var(--c-primary); margin-left:2px; animation: blink 0.7s infinite; vertical-align: text-bottom; }
+@keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* Control buttons */
+.controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 3px solid;
+  font-size: 1rem;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-settings {
+  background: var(--c-muted2);
+  color: var(--c-surface);
+  border-color: var(--c-muted2);
+  box-shadow: 0 4px 0 0 var(--c-primary), 0 5px 15px rgba(0,0,0,0.15);
+}
+
+#timer-screen.casino-mode #progressText { display: none !important; }
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000; /* above floating sound/settings controls */
+  padding: 1rem;
+  width:42rem;
+  margin: -400px 0px 0px -150px;
+  
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  border: 6px solid var(--c-accent);
+  box-shadow: 0 0 0 3px var(--c-surface), 0 20px 60px rgba(0,0,0,0.3);
+  max-width: 42rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background: var(--c-accent);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--c-accent);
+}
+
+/* Right-side controls (sound + close) in modal header */
+.modal-controls{ display:flex; gap:.5rem; align-items:center; }
+
+.modal-title {
+  font-size: 1.875rem;
+  font-weight: 10;
+  color: #ffe8d6;
+
+}
+
+.close-btn {
+  background: var(--c-accent);
+  color: #ffffff;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 3px solid var(--c-accent);
+  box-shadow: 0 3px 0 0 var(--c-primary), 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.1);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-content {
+  padding: 1.5rem;
+  background: #ffffff;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.probability-info {
+  background: var(--c-surface);
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 2px solid #ddbea9;
+  margin-bottom: 1rem;
+}
+
+.probability-text {
+  font-size: 0.875rem;
+  color: #6b705c;
+  font-weight: 200;
+}
+
+.reward-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.reward-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 3px solid var(--c-surface-strong);
+  box-shadow: 0 3px 0 0 var(--c-surface);
+}
+
+/* Rarity presets UI */
+.rarity-select {
+  padding: 0.5rem 0.6rem;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  color: var(--c-primary);
+  font-weight: 800;
+}
+.jackpot-info { display: none !important; }
+
+.reward-emoji {
+  width: 3.5rem;
+  height: 3.5rem;
+  text-align: center;
+  font-size: 2rem;
+  padding: 0; /* center the emoji vertically */
+  line-height: 3.5rem; /* align to full height */
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  color: var(--c-primary);
+  /* ensure emoji render across platforms */
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Segoe UI Symbol", sans-serif;
+}
+
+.reward-name {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  color: var(--c-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.reward-prob {
+  display: none !important; /* hide weighting input from players */
+}
+
+.delete-btn {
+  background: var(--c-accent);
+  color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--c-accent);
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.delete-btn:hover {
+  background: var(--c-primary);
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.divider {
+  border-top: 3px solid var(--c-accent);
+  margin: 1.5rem 0;
+}
+
+.add-reward-title {
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: #6b705c;
+  font-size: 1.25rem;
+}
+
+.add-reward-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-emoji {
+  width: 3.5rem;
+  height: 3.5rem;
+  text-align: center;
+  font-size: 2rem;
+  /* center the emoji perfectly */
+  padding: 0;
+  line-height: 3.5rem;
+  vertical-align: middle;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  /* ensure emoji render across platforms */
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Segoe UI Symbol", sans-serif;
+}
+
+.add-name {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  color: var(--c-primary);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.add-prob {
+  width: 5rem;
+  padding: 0.75rem;
+  border: 3px solid var(--c-accent);
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  color: var(--c-primary);
+  text-align: center;
+  font-weight: 900;
+  font-size: 0.875rem;
+}
+
+.add-btn {
+  /* match delete button visual */
+  background: var(--c-accent);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--c-accent);
+  box-shadow: none;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.add-btn:hover { filter: brightness(0.95); }
+
+.info-box {
+  padding: 1.25rem;
+  background: var(--c-surface);
+  border-radius: 1rem;
+  border: 3px solid var(--c-muted1);
+  margin-top: 1.5rem;
+}
+
+.info-text {
+  font-size: 0.875rem;
+  color: var(--c-primary);
+  font-weight: 200;
+  line-height: 1.6;
+}
+
+input {
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--c-muted1);
+}
+/* Token chip above the machine frame */
+
+.token-chip {
+  position: absolute;
+  top: 24.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: white;
+  border-radius: 10px;
+  padding: .1rem .75rem;
+  z-index: 5;
+}
+#timer-screen.casino-mode .token-chip {
+border: 3px solid #a5a58d}
+.token-chip-label { font-weight: 300; text-transform: none; }
+.token-chip-count { font-weight: 300; }
+
+/* Spin all button */
+.spin-all-wrap { display:flex; justify-content:center; margin-top:20px}
+.spin-all-btn {
+  background: #fff;
+  color: var(--c-primary);
+  border: 3px solid #a5a58d;
+  border-radius: 9999px;
+  padding: .5rem 1rem;
+  font-weight: 100;
+  cursor: pointer;
+}
+    .spin-all-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+/* Prevent any hover scale/translate or tooltip arrow on the spin-all button */
+#casino-area .gambling .spin-all-btn:hover { transform: none !important; background: #fff;  border: 3px solid var(--c-primary);}
+#casino-area .gambling .spin-all-btn::after,
+#casino-area .gambling .spin-all-btn:hover::after { content: none !important; animation: none !important; }
+
+    /* Hide inline message area under the machine; we show dialogue on top screen */
+    .gambling .message,
+    .gambling .message-icon,
+    .gambling .dialogue-tail-wrapper { display: none !important; }
+
+#casino-area .gambling { display: grid; justify-items: center; }
+
+/* Hide any token chip by default */
+.token-chip { display: none !important; }
+/* move slots here*/
+#casino-area .gambling .container {
+transform: scale(0.7); /* 0.5 ≈ “2x smaller” */
+transform-origin: top center;
+width: 100%; /* keep it a bit narrower */
+max-width: 26rem; /* keep existing cap, tweak if needed */
+margin-top: -250px;
+margin-bottom: 0px;
+
+}
+
+#casino-area .container {
+transform: scale(0.7); /* 0.5 ≈ “2x smaller” */
+transform-origin: top center;
+width: 100%; /* keep it a bit narrower */
+max-width: 26rem; /* keep existing cap, tweak if needed */
+margin-bottom: 10px;
+
+}
+
+/* calc(-1 * var(--casino-top-offset)) */
+
+/* (reverted) no pointer-events override here */
+
+/* Floating token gain indicator */
+.token-chip { position: absolute; overflow: visible; }
+.token-floater {
+  position: absolute;
+  left: 50%;
+  top: -1rem;
+  color: #2e7d32; /* green for gain */
+  font-weight: 900;
+  font-size: 1.15rem;
+  text-shadow: 0 1px 0 #ffffff, 0 0 2px rgba(0,0,0,0.35);
+  animation: token-float 1s ease-out forwards;
+  pointer-events: none;
+  z-index: 999; /* above lever */
+}
+
+@keyframes token-float {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to   { opacity: 0; transform: translate(-50%, -18px); }
+}
+
+
+
+
+
+
+
+

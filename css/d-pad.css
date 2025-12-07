@@ -1,0 +1,156 @@
+:root {
+  --btn: #a5a58d;
+  --btn-shadow: #6d7a70;
+  --ink: #f5f3ee;
+  --bg: #6d7a70,
+}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  margin: 0;
+}
+
+#dpad-container {
+  position: relative;
+  width: 60px;   /* was 48px → scaled ×1.25 */
+  height: 60px;
+  display: grid;
+  place-items: center;
+  z-index:1000px;
+}
+
+.dpad-btn {
+  opacity:0.9;
+  position: absolute;
+  border: none;
+  background: var(--btn);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.45rem; /* 0.36rem × 1.25 */
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+   box-shadow:
+    1px 1px 0px #6d7a70,
+    2px 2px 0px #4a352a;
+   /* 0.8px × 1.25 = 1px */
+  transition: all 80ms ease;
+  user-select: none;
+}
+
+/* Up button - narrow at top, curves out toward center */
+#dpad-up {
+  width: 19px;  /* 15 × 1.25 */
+  height: 24px; /* 19 × 1.25 */
+  left: 50%;
+  top: 0;
+  border: 0.5px solid white;
+  transform: translateX(-50%);
+  border-radius: 7px 7px 50% 50%; /* 5.6 × 1.25 ≈ 7 */
+}
+
+/* Down button - narrow at bottom, curves out toward center */
+#dpad-down {
+  width: 19px;
+  height: 24px;
+  left: 50%;
+  border: 0.5px solid white;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 7px 7px;
+}
+
+/* Left button - narrow on left, curves out toward center */
+#dpad-left {
+  width: 24px;  /* 19 × 1.25 */
+  height: 19px; /* 15 × 1.25 */
+  left: 0;
+  top: 50%;
+  border: 0.5px solid white;
+  transform: translateY(-50%);
+  border-radius: 7px 50% 50% 7px;
+}
+
+/* Right button - narrow on right, curves out toward center */
+#dpad-right {
+  width: 24px;
+  border: 0.5px solid white;
+  height: 19px;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50% 7px 7px 50%;
+}
+
+/* Pressed effect */
+.dpad-btn:active {
+  background: var(--btn-shadow);
+  box-shadow: 0.5px 0.5px 0 var(--btn-shadow);
+  transform: translate(0.5px, 0.5px);
+}
+
+#dpad-up:active {
+  transform: translate(calc(-50% + 0.5px), 0.5px);
+}
+
+#dpad-down:active {
+  transform: translate(calc(-50% + 0.5px), -0.5px);
+}
+
+#dpad-left:active {
+  transform: translate(0.5px, calc(-50% + 0.5px));
+}
+
+#dpad-right:active {
+  transform: translate(-0.5px, calc(-50% + 0.5px));
+}
+
+/* Hover effect */
+.dpad-btn:hover {
+  color: #6d7a70;
+}
+
+/* Keyboard focus */
+.dpad-btn:focus-visible {
+  outline: 3px solid rgba(165, 181, 168, 0.6);
+  outline-offset: 3px;
+  z-index: 2;
+}
+
+/* Arrow styling - custom rounded triangles */
+.dpad-btn::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  filter: drop-shadow(0 0.25px 0.25px rgba(0, 0, 0, 0.2));
+}
+
+/* Scale up triangles proportionally (×1.25) */
+#dpad-up::before {
+  border-width: 0 3.5px 5px 3.5px;
+  border-color: transparent transparent var(--ink) transparent;
+  border-radius: 0.75px;
+}
+
+#dpad-down::before {
+  border-width: 5px 3.5px 0 3.5px;
+  border-color: var(--ink) transparent transparent transparent;
+  border-radius: 0.75px;
+}
+
+#dpad-left::before {
+  border-width: 3.5px 5px 3.5px 0;
+  border-color: transparent var(--ink) transparent transparent;
+  border-radius: 0.75px;
+}
+
+#dpad-right::before {
+  border-width: 3.5px 0 3.5px 5px;
+  border-color: transparent transparent transparent var(--ink);
+  border-radius: 0.75px;
+}

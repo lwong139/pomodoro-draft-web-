@@ -1,0 +1,149 @@
+.character{
+  width:240px;
+  height:240px;
+  overflow:hidden;
+  position: relative;
+  /* place just below the mode buttons and centered */
+  margin:-50px auto 0;
+  z-index: 1;             /* keep below buttons */
+  pointer-events: none;   /* never block clicks */
+}
+/* Ensure both sprites occupy the exact same spot and size */
+.character img{
+  position:absolute;
+  left:0;
+  bottom:0;           /* anchor to baseline so both align */
+  height:100%;        /* scale to container height */
+  width:auto;         /* keep natural sheet width */
+  opacity: 0;         /* default hidden; JS toggles */
+  transition: opacity .5s ease;
+}
+.character img.visible{ opacity: 1; }
+
+/* Right arrow to enter/exit Casino scene */
+.timer-display{ margin-top: 6px; }
+
+.scene-arrow{
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #b7b7a4;
+  color:#6b705c;
+  padding: 6px 10px;
+  border-radius: 50%;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+  pointer-events: auto; /* clickable despite parent being none */
+  z-index: 5; /* ensure above content */
+  display:none; /* JS toggles visibility */
+}
+
+.scene-arrow:hover{
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #b7b7a4;
+  color:#6b705c;
+  filter: brightness(1.1); }
+.scene-arrow:active{ transform: translateY(-50%) scale(0.98); }
+
+/* Casino area container (hidden by default) */
+#casino-area{
+  position: relative;
+  margin-top: 10px;
+  overflow: visible;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform .45s ease, opacity .45s ease;
+  display: none; /* only shown in casino-mode */
+}
+
+
+#timer-screen.casino-mode #casino-area{
+  display:block;
+  transform: translateX(0);
+  opacity: 1;
+}
+.casino-content{ display:grid; gap:8px; justify-items:center; }
+/* Make embedded UIs smaller without leaking their CSS */
+.casino-embed{
+  display:block;
+  border:0;
+  background:transparent;
+  transform: scale(0.5);
+  transform-origin: top center;
+  width:100%; height:170px;
+}
+/* Hide any inline dialogue inside the casino content (we show it on top screen) */
+.casino-content .dialogue-container{ display:none !important; }
+
+/* Top-screen dialogue placement and scale */
+.dialogue-top-slot{ display:none; margin-top:-6px; transform: scale(0.7); transform-origin: top center; }
+#timer-screen.casino-mode .dialogue-top-slot{ display:block; }
+
+.casino-wrap #exitCasinoArrowLeft{
+  display:block !important;
+  margin-top:-30px;
+  
+}
+.casino-wrap{
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  min-height: 180px;
+  position: relative;
+  
+}
+.casino-header{ color:#6b705c; font-weight:800; margin-bottom:8px; text-align:center; }
+.scene-arrow-right{ position:absolute; right:8px; top:50%; transform: translateY(-50%); display:block; }
+.scene-arrow-left{
+  position:absolute;
+  left:8px;
+  right:auto;
+  top:-15%;
+  transform: translateY(-50%);
+  border:none;
+  display:block;
+}
+
+/* Hide bottom screen elements when in casino mode (keep container for casino area) */
+#timer-screen.casino-mode .confetti-wrap,
+#timer-screen.casino-mode .controls,
+#timer-screen.casino-mode .bottom-buttons,
+#timer-screen.casino-mode .character{ display:none !important; }
+
+/* Hide only the top-screen title in casino mode (not titles inside casino UI) */
+#timer-screen.casino-mode .top-screen .top-title{ display:none !important; }
+
+.coco-spritesheet{
+  animation: moveSpritesheet 1s steps(2) infinite;
+}
+
+
+.coco-sleeping-spritesheet{
+  animation: moveSpritesheet 3s steps(3) infinite;
+}
+
+.coco-gambling{
+  animation: moveSpritesheet 2s steps(2) infinite;
+}
+
+
+@keyframes moveSpritesheet{
+  from{ 
+    transform: translate3d(0px,0,0)
+  }
+  to {
+    transform: translate3d(-100%,0,0)
+  }
+}
+
+#timer-screen.casino-mode .dialogue-top-slot .dialogue-container {
+max-width: 380px; 
+width: 100%;
+}
+/* In casino mode, nudge timer + dialogue slightly upward */
+#timer-screen.casino-mode .timer-display { margin-top: -1px; }
+#timer-screen.casino-mode .dialogue-top-slot { margin-top: -30px; }

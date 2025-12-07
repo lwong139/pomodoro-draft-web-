@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/pretty.css">
+    <link rel="stylesheet" href="css/okey-button.css">
+    <link rel="stylesheet" href="css/d-pad.css">
+    <link rel="stylesheet" href="css/gamepad-buttons.css">
+    <link rel="stylesheet" href="css/circle-timer.css">
+    <link rel="stylesheet" href="css/slider.css">
+    <link rel="stylesheet" href="css/coco.css">
+    <link rel="stylesheet" href="css/control-buttons.css">
+    <link rel="stylesheet" href="css/draft3.css">
+    <link rel="stylesheet" href="./css/gambling.css">
+    <link rel="stylesheet" href="css/dialogue-box.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+    <title>Coco-doro</title> 
+    <!--favicon is like the logo at the top bar-->
+    <link rel="icon" href="./assets/coco-logo.png" type="image/png">
+    
+  </head>
+  <body>
+
+    <main>
+      <div class="console-container">
+      
+      <div class="middle-bevel"></div>
+        <div class="bottom-container">
+          <div class="grid">
+            <div class="side-left">
+              <div class="side-button"> 
+                <div id="dpad-container" role="group" aria-label="Soft D-pad">
+                  <button class="dpad-btn" id="dpad-up" data-arrow="▲"></button>
+                  <button class="dpad-btn" id="dpad-left" data-arrow="◀"></button>
+                  <button class="dpad-btn" id="dpad-right" data-arrow="▶"></button>
+                  <button class="dpad-btn" id="dpad-down" data-arrow="▼"></button>
+                </div>
+              </div>
+              <div class="side-right">
+                <div class="side-button"> 
+                  <div id="btn-container">
+                    <button id="left"> Y</button>
+                    <button id="up"> X</button>
+                    <button id="down"> B</button>
+                    <button id="right"> A</button>
+                  </div> 
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        
+
+            <!-- Screen 1: Menu/Setup -->
+            
+            <section id="menu-screen" class="screen active">
+              <div class="top-container">
+                <div class="top-screen">
+
+                  <div class="top-title">
+                    Pomodoro
+                  </div>
+                  <!-- Dialogue on the top screen (visible in casino mode) -->
+                  <div class="dialogue-top-slot">
+                    <div class="dialogue-container">
+                      <div class="name-tag">
+                        <span>Coco</span>
+                      </div>
+                      <div class="dialogue-box">
+                        <p class="dialogue-text" id="text"></p>
+                        <div class="dialogue-tail-wrapper">
+                          <div class="dialogue-tail"></div>
+                        </div>
+                      </div>
+                      <div class="a-button" onclick="restartAnimation()">A</div>
+                    </div>
+                  </div>
+
+                  <!-- your animation
+                  <div class="idle-anim">
+                    <img class ="coco" src="assets/coco.gif">
+                  </div>
+                  -->
+                </div>
+              </div>
+            <div class="middle-container">
+              <div class="middle-screen">
+                <div class="screen-container">
+                  <div class="top-left"> 
+                    Personal Timer
+                  </div>
+                  <div class="menu-font">
+                    Focus
+                  </div>
+                  <div class="focus-clock-row">
+                  <button class="focus-button-minus">-</button>
+                  <div class="focus-clock-display">
+                    <span>00</span>
+                    <span class="separator">:</span>
+                    <span id="js-minutes">25</span>
+                    <span class="separator">:</span>
+                    <span id="js-seconds">00</span>
+                  </div>
+                  <button class="focus-button-plus">+</button>
+                  </div>
+                  <div class="menu-font">
+                    Break 
+                  </div>
+                  <div class="break-clock-row">
+                  <button class="break-button-minus">-</button>
+                  <div class="break-clock-display">
+                    <span>00</span>
+                    <span class="separator">:</span>
+                    <span id="js-break-minutes">10</span>
+                    <span class="js-break-separator">:</span>
+                    <span id="js-break-seconds">00</span>
+                  </div>
+                  <button class="break-button-plus">+</button>
+                  </div>
+                  <div class="menu-font">
+                    Long Break
+                  </div>
+                  <div class="long-break-clock-row">
+                  <button class="js-long-break-button-minus">-</button>
+                  <div class="long-break-clock-display">
+                    <span>00</span>
+                    <span class="separator">:</span>
+                    <span id="js-long-break-minutes">15</span>
+                    <span class="separator">:</span>
+                    <span id="js-long-break-seconds">00</span>
+                  </div>
+                  <button class="js-long-break-button-plus">+</button>
+                  </div>
+                  <div class="inline">
+
+                  </div>
+                  <div class="last-row">
+                    <label class="switch">
+                      <input type="checkbox">
+                      <span class="slider round"></span>
+                    </label>
+                    <div class="menu-font">
+                      Auto Loop 
+                    </div>
+                    <div>
+                      <input class ="sessions cherry-font" type="number" value="4" min="1" max="99" step="1" pattern="\d*" inputmode="numeric" onkeypress="return event.charCode >= 48 && event.charCode <= 57" oninput="enforceMinMax(this)" required>
+                    </div>
+                    <div class="menu-font">
+                      Sessions
+                    </div>
+                  </div>
+                  <button type="button" class="menu-item js-okey-button" aria-label="Confirm settings and continue">
+                    <span class="selector">&gt;</span>
+                    <span class="menu-text">Okey</span>
+                    <span class="selector-placeholder"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            </section>
+            <!-- Screen 2: Timer -->
+
+             
+            <section id="timer-screen" class="screen ">
+              <div class="top-container">
+                <div class="top-screen">
+
+                  <div class="top-title">
+                    <div class="token-chip">
+                      <span class="token-chip-label">Tokens:</span>
+                      <span class="token-chip-count" id="tokenCount">10</span>
+                    </div>
+                  </div>
+
+                  <!-- your animation
+                    <div class="idle-anim">
+                    <img class ="coco" src="assets/coco.gif">
+                  </div>
+                    -->
+                  
+                </div>                  <!-- Inline tokens label above the circle timer (text only) -->
+                  <div class="tokens-inline"><span id="tokensInline">tokens: 0</span></div>
+
+                  <div class="timer-display">
+                    <div class="circle-timer" id="js-ring">
+                      <div class="progress-label">
+                      
+                        <span class="timer-numbers" id="js-timer-min-final">25</span>
+                        <span class="timer-numbers">:</span>
+                        <span class="timer-numbers" id="js-timer-sec-final">00</span>
+                      </div>
+                    </div> 
+                </div>
+                <!-- Dialogue below the timer; shown only in casino mode -->
+                <div class="dialogue-top-slot">
+                  <div class="dialogue-container">
+                    <div class="name-tag">
+                      <span>Coco</span>
+                    </div>
+                    <div class="dialogue-box">
+                      <p class="dialogue-text" id="casinoDialogueText"></p>
+                      <div class="dialogue-tail-wrapper">
+                        <div class="dialogue-tail"></div>
+                      </div>
+                    </div>
+                    <div class="a-button" onclick="restartAnimation()">A</div>
+                  </div>
+                </div>
+                <div class="progress-text" >
+                  <span id="progressText">0/4</span>
+                </div>
+              </div>
+
+              <div class="middle-container"> 
+                <div class="middle-container2">  
+                <div class="middle-screen-timer">
+                  <div id="js-progress"></div>
+                  <div class="bottom-buttons" id="js-mode-buttons">
+                      <button data-mode="focus">Focus</button>
+                      <button data-mode="shortBreak">Short break</button>
+                      <button data-mode="longBreak">Long break</button>
+                  </div>
+                  <div class="character">
+                    <img class="coco-spritesheet" src="./assets/coco-green.png">
+
+                    <img class="coco-sleeping-spritesheet" src="./assets/coco-sleeping-green.png">
+
+                    <img class="coco-gambling" src="./assets/coco-gambling.png">
+                    
+                  </div>
+                      <button id="enterCasinoArrow" class="scene-arrow" aria-label="Go to casino" title="Go to casino">▶</button>
+                  
+                  <!-- Progress tracker (draft3) -->
+                  <div class="progress-container">
+                    <div class="confetti-wrap" >
+                      <div class="progress-card">
+                        <div id="progressViewport" class="progress-viewport">
+                          <svg id="progressSvg" viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet"></svg>
+                        </div>
+                      </div>
+                      <canvas id="confettiCanvas"></canvas>
+                    </div>
+                    <div class="controls" >
+                      <div class="button-container">
+                        
+                        <button class="cute-button btn-reset" onclick="resetTimer()">
+                          <div class="icon icon-reset"></div>
+                        </button>
+                        <button class="cute-button btn-start" onclick="toggleTimer()">
+                          <div class="icon icon-pause">
+                            <div class="pause-bar"></div>
+                            <div class="pause-bar"></div>
+                          </div>
+                        </button>
+                        <button class="cute-button btn-skip" onclick="skipTimer()">
+                          <div class="icon icon-skip">
+                            <div class="skip-triangle"></div>
+                            <div class="skip-triangle"></div>
+                            <div class="skip-bar"></div>
+                          </div>
+                        </button>
+                      </div>
+                      <!-- Keep logic buttons hidden for compatibility -->
+                      <button class="main-button" data-action="start" id="js-btn" style="display:none">Start</button>
+                      <button id="resetBtn" style="display:none">Reset</button>
+                      <!-- Hidden placeholders to keep draft3.js happy (no visible UI) -->
+                      <button id="completeBtn" style="display:none"></button>
+                      <input id="sessionsSlider" type="range" min="1" max="24" value="4" style="display:none" />
+                      <input id="speedSlider" type="range" min="300" max="2000" step="100" value="1000" style="display:none" />
+                      <span id="sessionsValue" style="display:none">4</span>
+                      <span id="speedValue" style="display:none">1000</span>
+                      <!-- Placeholder for draft3 sprite selector to avoid null errors -->
+                      <div id="spriteButtons" style="display:none"></div>
+                    </div>
+                    <!-- Casino / Reward Area (slides in) -->
+                    <div id="casino-area" aria-hidden="true">
+                      <div class="casino-wrap">
+                        <div class="casino-header"></div>
+                        <div class="casino-body">
+                          <div class="casino-content">
+                            <!-- Embedded slot machine UI -->
+                            <!-- Background dots -->
+                            <div class="gambling">
+                            <div class="bg-dots" id="bgDots"></div>
+
+                            <!-- Confetti container -->
+                            <div id="confettiContainer"></div>
+
+                            <!-- Floating controls -->
+                            <button class="btn btn-settings settings-floating" onclick="openSettings()" aria-label="settings">⚙️</button>
+
+                            <div class="container">
+                              <!-- Corner decorations -->
+                              <div class="main-card">
+                                <!-- Header -->
+
+
+                                <button id="exitCasinoArrowLeft" class="scene-arrow scene-arrow-left" aria-label="Back to focus" title="Back to focus">◀</button>
+                                <!-- Main content -->
+                                <div class="content">
+                                  <div class="machine-frame">
+                                    <!-- Token chip centered on top border -->
+                                      <div class="token-chip">
+                                        <span class="token-chip-label">Tokens:</span>
+                                        <span class="token-chip-count" id="tokenCount">10</span>
+                                      </div>
+                                    <div class="display-screen">
+                                      <div class="reels">
+                                        <div class="reel" id="reel1">?</div>
+                                        <div class="reel" id="reel2">?</div>
+                                        <div class="reel" id="reel3">?</div>
+                                      </div>
+                                    </div>
+
+                                    
+
+                                    <!-- Lever -->
+                                    <div class="lever-container" onclick="spin()">
+                                      <div class="lever-label" id="leverLabel">pull!</div>
+                                      <div class="lever" id="lever">
+                                        <div class="lever-track">
+                                          <div class="lever-ball" id="leverBall">
+                                            <div class="spinner hidden" id="spinner"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- Spin all button -->
+                                    <div class="spin-all-wrap">
+                                      <button class="spin-all-btn" onclick="spinAll()">Spin all (<span id="spinAllCount">10</span>)</button>
+                                    </div>
+                                    
+                                  <!-- Message -->
+                                  <div class="message hidden" id="message">
+                                <div class="message-icon" aria-hidden="true">
+                                <svg class="icon-paw" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                                  <g fill="currentColor">
+                                  <circle cx="18" cy="20" r="7"/>
+                                  <circle cx="32" cy="17" r="6"/>
+                                  <circle cx="46" cy="20" r="7"/>
+                                  <circle cx="26" cy="34" r="8"/>
+                                  <path d="M32 36c7 0 13 5 13 11 0 4-3 7-9 7h-8c-6 0-9-3-9-7 0-6 6-11 13-11z"/>
+                                  </g>
+                                </svg>
+                                </div>
+                                    <div class="message-text" id="messageText"></div>
+                                    <div class="dialogue-tail-wrapper"><div class="dialogue-tail"></div></div>
+                                  </div>
+
+                                  <!-- Controls -->
+
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Settings Modal -->
+                            <div class="modal-overlay hidden" id="modalOverlay" onclick="closeSettings(event)">
+                              <div class="modal" onclick="event.stopPropagation()">
+                                <div class="modal-header">
+                                  <h2 class="modal-title">customize rewards ૮ • ﻌ - ა</h2>
+                                  <div class="modal-controls">
+                                    <button class="close-btn" id="soundBtn" onclick="toggleSound()" aria-label="Sound">🔊</button>
+                                    <button class="close-btn" onclick="closeSettings()">×</button>
+                                  </div>
+                                </div>
+                                <div class="modal-content">
+                                  <div class="probability-info">
+                                    <p class="probability-text">two-match chance ≈ <span id="twoMatchOdds">--</span></p>
+                                  </div>
+
+                                  <div class="reward-list" id="rewardList"></div>
+
+                                  <div class="divider"></div>
+
+                                  <h3 class="add-reward-title">Add new reward ૮₍ • ᴥ • ₎ა</h3>
+                                  <div class="add-reward-form">
+                                    <input type="text" class="add-emoji" id="newEmoji" placeholder="&#128054;" value="&#128054;" maxlength="2">
+                                    <input type="text" class="add-name" id="newName" placeholder="reward name">
+                                    <select id="newRarity" class="rarity-select" aria-label="rarity"><option value="Common">Common (20%)</option><option value="Uncommon">Uncommon (10%)</option><option value="Rare">Rare (5%)</option><option value="Epic">Epic (2%)</option><option value="Legendary">Legendary (1%)</option></select>
+                                    <button class="add-btn" onclick="addReward()" aria-label="Add reward">+</button>
+                                  </div>
+
+                                  
+
+                                  <div class="info-box">
+                                    <p class="info-text">
+                                      <strong style="font-size: 1rem;">💡 how it works:</strong><br>
+                                      higher probability = more likely to appear!<br>
+                                      🎰 match all 3 = win the reward!<br>
+                                      💫 match 2 = get +1 token back~
+                                    </p>
+                                  </div>
+                            <!-- Embedded dialogue box UI -->
+                                <div class="dialogue-container">
+                                <div class="name-tag">
+                                    <span>Coco</span>
+                                    <span class="paw-icon">🐾</span>
+                                </div>
+                                <div class="dialogue-box">
+                                    <div class="heart-icon">❤</div>
+                                    <p class="dialogue-text" id="text"></p>
+                                    <div class="dialogue-tail-wrapper">
+                                        <div class="dialogue-tail"></div>
+                                    </div>
+                                </div>
+                              <div class="a-button" onclick="restartAnimation()">A</div>
+                          </div>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Progress tracker -->
+                </div>
+              </div>
+                  </div>
+                  
+            </section>
+          </div>
+
+          
+    </main>
+    <audio src="break.mp3" data-sound="focus"></audio>
+    <audio src="break.mp3" data-sound="shortBreak"></audio>
+    <audio src="break.mp3" data-sound="longBreak"></audio>
+    <!-- Toast layer for floating reward messages -->
+    <script src="./js/draft3.js"></script>
+    <script src="./js/draft3-bridge.js"></script>
+    <div id="toastLayer" style="position:fixed; inset:0; z-index:50; pointer-events:none;"></div>
+    <script src="pomo.js"></script>
+    <script src="js/gambling.js"></script>
+    <script src="js/dialogue-box.js"></script>
+  </body>
+</html>
+
+
+

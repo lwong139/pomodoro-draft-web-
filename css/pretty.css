@@ -1,0 +1,635 @@
+/*
+font-family: 'Bitcount Grid Single';
+font-family: 'Cherry Bomb One';
+*/
+
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin:0;
+  font-family: 'Cherry Bomb One';
+  font-size: 20px;
+  color:#6b705c;
+  transition: background-color 0.2s ease; /* smooth mode color change */
+  
+}
+/*mostly for the + and - */
+
+button{
+  background-color: transparent;
+  border: none;
+  font-weight: 900;
+  font-family: 'Cherry Bomb One';
+  font-size: 20px;
+  color: #898f76;
+  position: relative; /* allow right-side tooltip positioning */
+  cursor: pointer;
+}
+
+
+button:hover{
+  background-color: transparent;
+  border: none;
+  color: #535747;
+  font-weight: 900;
+  font-family: 'Cherry Bomb One';
+  font-size: 20px;
+}
+button:active{
+  background-color: transparent;
+  border: none;
+  color: #3c3f33;
+  font-weight: 900;
+  font-family: 'Cherry Bomb One';
+  font-size: 20px;
+}
+
+/* Tooltip-like right arrow on hover for all buttons */
+button::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 6px); /* place to the left of button */
+  /* base vertical alignment for the arrow */
+  --arrow-base: -50%;
+  transform: translateY(var(--arrow-base));
+  color: #6b705c; /* white tooltip */
+  font-weight: 900;
+  font-size: 1em; /* match button text size */
+  font-family: inherit; /* match button font */
+  line-height: 1; /* tighter box for better alignment */
+  opacity: 0;
+  transition: opacity .15s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.6);
+  pointer-events: none; /* don't steal hover */
+}
+
+button:hover::after{
+  content: '>';
+  opacity: 1;
+  animation: arrow-bob 0.5s ease-in-out infinite;
+}
+
+/* Exclude D-pad and gamepad buttons from showing the hover arrow */
+.dpad-btn,
+#btn-container button{
+  position: static; /* don't need relative positioning for tooltip */
+}
+
+.dpad-btn::after,
+.dpad-btn:hover::after,
+#btn-container button::after,
+#btn-container button:hover::after{
+  content: none !important;
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+/* Add hover arrow to the Auto Loop switch */
+.switch::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 6px);
+  --arrow-base: -50%;
+  transform: translateY(var(--arrow-base));
+  color: #6b705c;
+  font-weight: 900;
+  font-size: 1em;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity .15s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.6);
+  pointer-events: none;
+}
+
+.switch:hover::after{
+  content: '>';
+  opacity: 1;
+  animation: arrow-bob 0.5s ease-in-out infinite;
+}
+
+/* Add hover arrow to the Sessions number input (use parent div via :has) */
+.last-row > div:has(> input.sessions){
+  position: relative;
+}
+
+.last-row > div:has(> input.sessions)::after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: auto;
+  right: calc(100% + 6px);
+  --arrow-base: -50%;
+  transform: translateY(var(--arrow-base));
+  color: #6b705c;
+  font-weight: 900;
+  font-size: 1em;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity .15s ease;
+  text-shadow: 0 0 10px rgba(255,255,255,0.6);
+  pointer-events: none;
+}
+
+.last-row > div:has(> input.sessions:hover)::after{
+  content: '>';
+  opacity: 1;
+  animation: arrow-bob 0.5s ease-in-out infinite;
+}
+
+/* Nudge the hover arrow up slightly for +/- controls */
+.focus-button-minus::after,
+.focus-button-plus::after,
+.break-button-minus::after,
+.break-button-plus::after,
+.js-long-break-button-minus::after,
+.js-long-break-button-plus::after{
+  /* nudge base up by 5px; animation stays relative */
+  --arrow-base: calc(-50%);
+  
+}
+
+/* Relative bob that respects the base alignment */
+@keyframes arrow-bob {
+  0%, 100% {
+    transform: translateY(var(--arrow-base));
+  }
+  50% {
+    transform: translateY(calc(var(--arrow-base) - 5px));
+  }
+}
+
+
+
+
+
+.bottom-container{
+  /*
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  */
+  position: absolute;          /* overlay inside console */
+  /* tune these to match the bottom screen area of shell.png */
+  /* Position the interactive area over the bottom screen */
+  inset: 44% 8% 8% 0.1%;            /* top right bottom left */
+  overflow: visible;               /* keep content inside the screen */
+}
+
+/* Ensure the console art scales and doesn't leave gaps */
+.bottom-container > img{ display:none; }
+
+/* Place the interactive grid on top of the image */
+.bottom-container .grid{
+  position: relative;
+  height: 100%;                 /* fill overlay instead of fixed 400px */
+}
+
+.console-container{
+  /*
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  */
+  position: relative;
+  width: min(90vw, 524px);
+  aspect-ratio: 524 / 663;
+  background: url('../assets/shell.png') center/contain no-repeat;
+}
+.top-container{
+  display:flex;
+  grid:column;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  /* Nudge the Pomodoro title, circular timer, and 0/4 upward */
+  inset: -86% 30% 100% 25%; /* top right bottom left */
+  background-image: url("../assets/top-layer-decor.png");
+  height: auto;
+  width:275px;
+
+}
+.middle-bevel{
+  align-items: center;
+}
+
+.top-title{
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  background:none;
+}
+/* Sound button placement for the menu overlay (top screen) */
+#menu-screen .menu-sound{
+  position: absolute;
+  top: -6px;
+  right: 8px;
+  z-index: 60;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Hide any token chip by default */
+.token-chip { display: none !important; }
+
+/* Only show + style inside casino area */
+#casino-area .token-chip {
+  display: inline-flex !important;
+  position: absolute;
+  left: 50%;
+  top: -1.8rem;                 /* sits like a tab on the frame */
+  transform: translateX(-50%);
+  gap: .4rem;
+  background: #fff;
+  color: var(--c-primary);
+  border: 3px solid #b7b7a4;
+  border-radius: 10px;
+  padding: .1rem .75rem;
+  z-index: 5;
+}
+
+
+
+.grid{
+  
+  display:grid;
+  grid-template-columns: 100px 1fr 100px;
+  align-items: center;
+  position:absolute;
+  inset:0;
+  height:100%;
+}
+.coco{
+  height:300px;
+  width:300px;
+}
+
+
+.side-left{
+  display: flex;
+  align-items: center;
+  padding-left:25px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+/* moving right buttons */
+.side-right{
+  padding-left: 345px;
+  width: 68px;
+  height:120px;
+}
+
+
+
+/* personal timer */
+.top-left {
+  position: absolute;
+  top: -20px;   /* distance from the top */
+  left: 10px;  /* distance from the left */
+  font-size: 25px;
+  font-family: 'Cherry Bomb One';
+  color: #6b705c;
+}
+
+.middle-screen{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 20% 13% auto 20%; 
+  height:280px;
+
+}
+.middle-screen-timer{
+
+  display: flex;
+  position: relative;
+  flex-direction: column; 
+  align-items: center;
+  gap:10px;
+  z-index:-10px;
+
+}
+.middle-container{
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;  
+  inset: 20% 13% auto 20%; /* use negative pixels to pull it up */
+  height:275px;
+  background-image: url("../assets/bottom-layer-decor.png");
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: contain
+}
+
+.middle-container2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* top & bottom layout */
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 12px 10px 12px; /* tighten vertical padding to fit buttons */
+}
+
+.menu-font{
+  font-family: 'Cherry Bomb One';
+  color: #6b705c;
+  font-size: 20px;
+}
+.timer-display {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-screen{
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+}
+
+.side-button{
+  display:flex;
+  align-items: center;
+  height: 300px;
+  margin-top: 50px;
+}
+
+.focus-clock-display,
+.break-clock-display,
+.long-break-clock-display{
+  background-color:white;
+  padding: 0px 20px 5px 20px;
+  border-radius: 10px;
+}
+.screen-container{
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0.85);
+  transform-origin: center;
+  padding-top:10px;
+  font-family: 'Cherry Bomb One';
+}
+.inline{
+  display:inline;
+}
+/* Keep the confirm button from overflowing the screen */
+.js-okey-button{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+  color: #b7b7a4;
+}
+.js-okey-button:hover{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+} 
+.js-okey-button:active{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+} 
+
+.screen { display: none; opacity:0; transition:opacity .25s ease}
+.screen.active { display: block; opacity:1 }
+
+.idle-anim {
+  opacity: 0.9;
+  animation: floaty 6s ease-in-out infinite;
+}
+
+.focus-clock-row,
+.break-clock-row,
+.long-break-clock-row{
+  display:flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.last-row{
+  display:flex;
+  align-items: center;
+  margin-top: 10px;
+  gap:10px;
+}
+
+/* Tighter controls so Auto Loop row fits inside the bottom screen */
+.last-row{
+  justify-content: center;
+  gap: 20px;                 /* reduce spacing between items */
+}
+
+/* Make the last-row labels smaller and wrap "Auto Loop" to two lines */
+.last-row .menu-font{
+  font-size: 16px;           /* smaller label text in last row */
+}
+
+/* Target the first label (Auto Loop) to wrap to two lines */
+.last-row .menu-font:first-of-type{
+  max-width: 52px;           /* constrain width so it breaks to two lines */
+  white-space: normal;       /* allow wrapping */
+  text-align: center;        /* center the two-line label */
+  line-height: 1;            /* keep height compact so row height stays same */
+}
+
+/* moving short break and long break to two seperate lines*/
+#js-mode-buttons{
+  display: flex;
+  padding-left:10px;
+  gap: 25px;
+  padding-top:6px; /* reduce top padding to reclaim space */
+  margin-top:-12px; /* lift mode buttons upward */
+  position: relative;
+  z-index: 5; /* sit above any overlapping decorative layers */
+}
+
+#js-mode-buttons button{
+  white-space: normal;
+  text-align: center;
+  line-height: 1.05;
+}
+
+#js-mode-buttons button[data-mode="shortBreak"],
+#js-mode-buttons button[data-mode="longBreak"]{
+  inline-size: 96px;
+  padding-top: 3px;
+}
+
+/* Keep Start/Reset inside the bottom screen container */
+#timer-screen .progress-container{ margin-top: -20px; }
+#timer-screen .controls{ margin-top: -40px; }
+
+/* Always hide token label next to the session counter; show tokens only in casino area */
+#timer-screen #progressTokens{ display:none !important; }
+#timer-screen.casino-mode #progressTokens{ display:none !important; }
+
+/* Reduce extra spacing inside the progress card on the timer screen */
+#timer-screen .progress-card{
+  padding-top: 1px;
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+  width:200px;
+}
+
+/* Text-only tokens line above the circle timer */
+#timer-screen .tokens-inline{
+  display: block;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 2px;
+  font-weight: 900;
+  color: #6b705c; /* same as primary */
+}
+/* Hide inline tokens when in casino mode to avoid duplication */
+#timer-screen.casino-mode .tokens-inline{ display: none; }
+
+
+.cherry-font{
+  font-family: 'Cherry Bomb One';
+  font-size: 20px;
+  color: #6b705c;
+}
+.bit-font{
+  font-family: 'Bitcount Grid Single';
+  font-size: 20px;
+  color: #6b705c;
+
+}
+/* Keep the sessions number field compact */
+input.sessions{
+  width: 42px;
+  text-align: center;
+  height: 26px;
+  line-height: 26px;
+  border: 1px solid #bfbfbf;
+  border-radius: 4px;
+  background: #fff;
+  text-decoration: none;           /* avoid any underline */
+  outline: none;                   /* remove focus outline */
+  box-shadow: none;                /* remove any UA focus shadow */
+}
+
+/* Ensure focus state doesn't add an underline/shadow */
+input.sessions:focus{
+  outline: none;
+  box-shadow: none;
+  border-color: #909090;
+  text-decoration: none;
+}
+
+.number{
+  width:30px;
+}
+
+
+
+.main-button{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+  color: #6b705c;
+  text-transform: uppercase;
+}
+.main-button:hover{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  transition: transform .15s ease, filter .15s ease;
+} 
+.main-button:active{
+  border-color: white;
+  border-style: solid;
+  background-color: beige;
+  border-radius: 15px;
+  padding: 6px 12px;
+  max-width: 180px;
+  align-self: center;
+
+} 
+
+button:focus, button:active {
+  outline: none;
+
+}
+
+#js-mode-buttons button[data-mode="focus"] {
+  background-color: #ddbea9;
+  color:#6b705c;
+  padding:5px;
+  width:70px;
+  
+
+  
+}
+#js-mode-buttons button[data-mode="shortBreak"] {
+  background-color: #fefae0;
+  color:#6b705c;
+  padding:5px;
+  width:70px;
+}
+#js-mode-buttons button[data-mode="longBreak"] {
+  background-color: #e9edc9;
+  color:#6b705c;
+  padding:5px;
+  width:70px;
+
+}
+
+#js-mode-buttons button {
+  border-radius: 10px;
+  padding: 6px 14px;
+  font-size: 18px;
+  color: #6b705c;
+  font-family: 'Cherry Bomb One';
+  transition: transform .15s ease, filter .15s ease;
+
+}
+
+#js-mode-buttons button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  color:#6b705c;
+}
+
+/* Keep mode, start, and reset text color consistent */
+#js-mode-buttons button:active{ color:#6b705c; }
+.main-button:hover, .main-button:active{ color:#6b705c; }
+#resetBtn, #resetBtn:hover, #resetBtn:active{ color:#6b705c !important; }
+
