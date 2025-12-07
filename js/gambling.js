@@ -23,6 +23,11 @@
         }
       }catch(_){ tokens = n; }
       updateTokenDisplays(tokens);
+      // Ensure lever disabled state matches token availability
+      try{
+        const lc = document.querySelector('.lever-container');
+        if (lc) lc.classList.toggle('disabled', tokens <= 0);
+      }catch(_){/* no-op */}
       try{ if (typeof window.updateProgressTokenCounter === 'function') window.updateProgressTokenCounter(); }catch(_){}
       return tokens;
     }
