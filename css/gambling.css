@@ -245,7 +245,8 @@ padding: 0;
     }
 
 .lever-container.disabled {
-  cursor: not-allowed;
+  cursor: default;      /* avoid cross cursor flicker */
+  pointer-events: none; /* prevent clicks when disabled */
   opacity: 0.6;
 }
 

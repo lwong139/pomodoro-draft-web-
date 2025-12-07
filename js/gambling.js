@@ -23,19 +23,23 @@
         }
       }catch(_){ tokens = n; }
       updateTokenDisplays(tokens);
-      // Ensure lever disabled state matches token availability
-      try{
-        const lc = document.querySelector('.lever-container');
-        if (lc) lc.classList.toggle('disabled', tokens <= 0);
-      }catch(_){/* no-op */}
+    // Ensure lever disabled state matches token availability
+    syncLeverDisabled();
       try{ if (typeof window.updateProgressTokenCounter === 'function') window.updateProgressTokenCounter(); }catch(_){}
       return tokens;
     }
     // expose helpers if not already defined
     if (!window.getTokens) window.getTokens = getStoredTokens;
-    if (!window.setTokens) window.setTokens = setStoredTokens;
+if (!window.setTokens) window.setTokens = setStoredTokens;
 
-    let tokens = getStoredTokens(10);
+let tokens = getStoredTokens(10);
+// Keep lever enabled/disabled in sync with current token count
+function syncLeverDisabled(){
+  try{
+    const lc = document.querySelector('.lever-container');
+    if (lc) lc.classList.toggle('disabled', tokens <= 0);
+  }catch(_){/* no-op */}
+}
 
     // Daily random jackpot cap (15–40%) + persistent pity (+1% per non-jackpot spin)
     function __todayStr(){ try{ return new Date().toISOString().slice(0,10); }catch(_){ return ''; } }
@@ -105,6 +109,7 @@
             tokens = (typeof window.getTokens === 'function') ? window.getTokens(10) : getStoredTokens(10);
           } catch(_) { tokens = r; }
           updateTokenDisplays(tokens);
+          syncLeverDisabled();
           try{ if (typeof window.updateProgressTokenCounter === 'function') window.updateProgressTokenCounter(); }catch(_){/* no-op */}
           return r;
         };
@@ -575,8 +580,17 @@
       try{ setJackpotPity(__pity); }catch(_){/* no-op */}
 
       if (jackpots.length) {
-        const names = jackpots.map(j => j.name).join(', ');
-        showMessage(`Jackpots: ${jackpots.length}\n${names}`);
+        // Summarize duplicate rewards with counts (e.g., "Scroll Instagram x3")
+        const tally = {};
+        jackpots.forEach(j => {
+          const name = (j && j.name) ? j.name : 'Unknown reward';
+          tally[name] = (tally[name] || 0) + 1;
+        });
+        const summary = Object.entries(tally)
+          .map(([name,count]) => count > 1 ? `${name} x${count}` : name)
+          .join(', ');
+        // Show only the reward names with counts (no leading total)
+        showMessage(`Jackpots hit:\n${summary}`);
         playSound('jackpot');
         createConfetti();
       } else {
@@ -765,9 +779,12 @@
         }
       }catch(_){/* no-op */}
     }
-    bindLeverClick();
-    setTimeout(bindLeverClick, 0);
-    document.addEventListener('DOMContentLoaded', bindLeverClick);
-    // Seed counts on load
-    (function(){ updateTokenDisplays(tokens); })();
-    // removed: symbol count slider binding
+bindLeverClick();
+setTimeout(bindLeverClick, 0);
+document.addEventListener('DOMContentLoaded', bindLeverClick);
+// Seed counts on load
+(function(){
+  updateTokenDisplays(tokens);
+  syncLeverDisabled();
+})();
+// removed: symbol count slider binding
