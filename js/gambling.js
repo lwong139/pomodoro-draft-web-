@@ -745,7 +745,7 @@
     // Set default reel placeholders to an image instead of question marks
     ['reel1','reel2','reel3'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.innerHTML = '<img class="reel-placeholder" src="./assets/coco-face.png" alt="coco">';
+      if (el) el.innerHTML = '<img class="reel-placeholder" src="./assets/icon.ico" alt="coco">';
     });
 
     // Initialize (bg dots disabled; spacer handles layout)
